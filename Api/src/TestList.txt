@@ -1,0 +1,5 @@
+TEST LIST
+
+Unique tokens
+Accept multiple ranges
+_tokenRange on TokenProvider can be null when getting the token

@@ -11,7 +11,7 @@ public class Base62EncodingScenarios
     [InlineData(1000, "G8")]
     [InlineData(61, "z")]
     [InlineData(987654321, "14q60P")]
-    public void ShouldEncodeNumberToBase62(int number, string expected)
+    public void ShouldEncodeNumberToBase62(long number, string expected)
     {
         number.EncodeToBase62().Should().Be(expected);
     }
