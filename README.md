@@ -15,4 +15,13 @@ az login
 az group create --name dometrain-urlshortener-dev --location francecentral
 ```
 
+### Create User for GH Actions
 
+```bash
+az ad sp create-for-rbac --name "GitHub-Actions-SP" \
+                         --role contributor \
+                         --scopes /subscriptions/684381a3-7c37-4390-9a25-ffe6003169ad \
+                         --sdk-auth
+```
+
+### Configure a federated identity credential on an app
