@@ -39,6 +39,7 @@ jobs:
       - name: Deploy
         uses: azure/bicep-deploy@v2
         with:
+          type: deployment
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
           template-file: ./infrastructure/main.bicep
           
