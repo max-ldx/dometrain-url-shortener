@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Development
     steps:
-      - uses: actions/chechkout@v7
+      - uses: actions/checkout@v7
 
       - name: Azure login
         uses: azure/login@v3
