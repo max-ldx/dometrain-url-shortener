@@ -28,34 +28,48 @@ public class AddUrlScenarios
         var request = CreateAddUrlRequest();
         var response = await _handler.HandleAsync(request, CancellationToken.None);
 
-        response.ShortUrl.Should().NotBeEmpty();
-        response.ShortUrl.Should().Be("1");
+        response.Succeeded.Should().BeTrue();
+        response.Value!.ShortUrl.Should().NotBeEmpty();
+        response.Value!.ShortUrl.Should().Be("1");
     }
 
     [Fact]
     public async Task ShouldSaveShortUrl()
     {
         var request = CreateAddUrlRequest();
-        
+
         var response = await _handler.HandleAsync(request, CancellationToken.None);
-        
-        _urlDataStore.Should().ContainKey(response.ShortUrl);
+
+        response.Succeeded.Should().BeTrue();
+        _urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
     }
-    
+
     [Fact]
     public async Task ShouldSaveShortUrlWithCreatedByAndCreatedOn()
     {
         var request = CreateAddUrlRequest();
-        
+
         var response = await _handler.HandleAsync(request, CancellationToken.None);
-        
-        _urlDataStore.Should().ContainKey(response.ShortUrl);
-        _urlDataStore[response.ShortUrl].CreatedBy.Should().Be(request.CreatedBy);
-        _urlDataStore[response.ShortUrl].CreatedOn.Should().Be(_timeProvider.GetUtcNow());
+
+        response.Succeeded.Should().BeTrue();
+        _urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
+        _urlDataStore[response.Value!.ShortUrl].CreatedBy.Should().Be(request.CreatedBy);
+        _urlDataStore[response.Value!.ShortUrl].CreatedOn.Should().Be(_timeProvider.GetUtcNow());
     }
 
-    private static AddUrlRequest CreateAddUrlRequest()
+    [Fact]
+    public async Task ShouldReturnErrorIfCreatedByIsEmpty()
     {
-        return new AddUrlRequest(new Uri("https://dometrain.com"), "max@test.com");
+        var request = CreateAddUrlRequest(string.Empty);
+
+        var response = await _handler.HandleAsync(request, CancellationToken.None);
+
+        response.Succeeded.Should().BeFalse();
+        response.Error.Code.Should().Be("missing_value");
+    }
+
+    private static AddUrlRequest CreateAddUrlRequest(string createdBy = "max@test.com")
+    {
+        return new AddUrlRequest(new Uri("https://dometrain.com"), createdBy);
     }
 }
