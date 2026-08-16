@@ -1,3 +1,13 @@
 <Solution>
-  <Project Path="UrlShortener.Api\UrlShortener.Api.csproj" />
+  <Folder Name="/Api/" />
+  <Folder Name="/Api/src/">
+    <File Path="Api\src\TestList.txt" />
+    <Project Path="Api/src/UrlShortener.Core/UrlShortener.Core.csproj" />
+    <Project Path="Api/src/UrlShortener.Infrastructure/UrlShortener.Infrastructure.csproj" />
+    <Project Path="Api\src\UrlShortener.Api\UrlShortener.Api.csproj" />
+  </Folder>
+  <Folder Name="/Api/tests/">
+    <Project Path="Api/tests/UrlShortener.Api.Core.Tests/UrlShortener.Api.Core.Tests.csproj" />
+    <Project Path="Api/tests/UrlShortener.Tests/UrlShortener.Tests.csproj" />
+  </Folder>
 </Solution>
