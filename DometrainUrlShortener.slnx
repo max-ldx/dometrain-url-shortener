@@ -7,5 +7,6 @@
   </Folder>
   <Folder Name="/Api/tests/">
     <Project Path="Api/tests/UrlShortener.Api.Core.Tests/UrlShortener.Api.Core.Tests.csproj" />
+    <Project Path="Api/tests/UrlShortener.Tests/UrlShortener.Tests.csproj" />
   </Folder>
 </Solution>
