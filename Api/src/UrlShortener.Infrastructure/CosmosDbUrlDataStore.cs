@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.Azure.Cosmos;
+using Newtonsoft.Json;
 using UrlShortener.Core.Urls.Add;
 
 namespace UrlShortener.Infrastructure;
@@ -18,14 +19,14 @@ public class CosmosDbUrlDataStore(Container container) : IUrlDataStore
     {
         public string LongUrl { get; } = longUrl;
 
-        [JsonPropertyName("id")] // Cosmos DB Unique Identifier
+        [JsonProperty(PropertyName = "id")] // Cosmos DB Unique Identifier
         public string ShortUrl { get; } = shortUrl;
 
         public DateTimeOffset CreatedOn { get; } = createdOn;
 
         public string CreatedBy { get; } = createdBy;
 
-        public string PartitionKey => ShortUrl[..1];
+        public string PartitionKey => ShortUrl[..1]; // Cosmos DB Partition Key
 
         public static implicit operator ShortenedUrl(ShortenedUrlCosmos url) =>
             new(new Uri(url.LongUrl), url.ShortUrl, url.CreatedBy, url.CreatedOn);
