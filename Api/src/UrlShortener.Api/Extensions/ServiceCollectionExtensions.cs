@@ -18,9 +18,7 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<ShortUrlGenerator>();
-
-        services.AddSingleton<IUrlDataStore, InMemoryUrlDataStore>();
-
+        
         return services;
     }
 }

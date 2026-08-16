@@ -17,6 +17,16 @@ module apiService 'modules/compute/appservice.bicep' = {
     appServicePlanName: 'plan-api-${uniqueId}'
     location: location
     keyVaultName: keyVault.outputs.name
+    appSettings: [
+      {
+        name: 'DatabaseName'
+        value: 'urls'
+      }
+      {
+        name: 'ContainerName'
+        value: 'items'
+      }
+    ]
   }
 }
 
