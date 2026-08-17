@@ -1,4 +1,6 @@
 param location string = resourceGroup().location
+@secure()
+param pgSqlPassword string
 
 var uniqueId = uniqueString(resourceGroup().id)
 
@@ -27,6 +29,27 @@ module apiService 'modules/compute/appservice.bicep' = {
         value: 'items'
       }
     ]
+  }
+}
+
+module tokenRangeService 'modules/compute/appservice.bicep' = {
+  name: 'tokenRangeServiceDeployment'
+  params: {
+    appName: 'token-range-service-${uniqueId}'
+    appServicePlanName: 'plan-token-range-${uniqueId}'
+    location: location
+    keyVaultName: keyVault.outputs.name
+  }
+}
+
+module postgres 'modules/storage/postgresql.bicep' = {
+  name: 'postgresDeployment'
+  params: {
+    name: 'postgresql-${uniqueString(resourceGroup().id)}'
+    location: location
+    administratorLogin: 'adminuser'
+    administratorLoginPassword: pgSqlPassword
+    keyVaultName: keyVault.outputs.name
   }
 }
 
