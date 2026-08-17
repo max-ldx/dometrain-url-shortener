@@ -48,3 +48,39 @@ jobs:
           app-name: ${{ vars.API_RESOURCE_NAME }}
           publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
           package: .
+
+  deploy-stg:
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    environment: Staging
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.API_RESOURCE_NAME }}
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: .
+
+
+  deploy-prd:
+    runs-on: ubuntu-latest
+    needs: deploy-stg
+    environment: Production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.API_RESOURCE_NAME }}
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: .
