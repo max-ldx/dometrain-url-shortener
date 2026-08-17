@@ -47,7 +47,7 @@ jobs:
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
           template-file: ./infrastructure/main.bicep
-          parameters: >- 
+          parameters: |
             pgSqlPassword=${{ secrets.PG_SQL_PASSWORD }}
     
   deploy-stg:
@@ -80,7 +80,7 @@ jobs:
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
           template-file: ./infrastructure/main.bicep
-          parameters: >-
+          parameters: |
             pgSqlPassword=${{ secrets.PG_SQL_PASSWORD }}
   
   deploy-prd:
@@ -114,5 +114,5 @@ jobs:
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
           template-file: ./infrastructure/main.bicep
-          parameters: >-
+          parameters: |
             pgSqlPassword=${{ secrets.PG_SQL_PASSWORD }}
