@@ -30,6 +30,16 @@ module apiService 'modules/compute/appservice.bicep' = {
   }
 }
 
+module tokenRangeService 'modules/compute/appservice.bicep' = {
+  name: 'tokenRangeServiceDeployment'
+  params: {
+    appName: 'token-range-service-${uniqueId}'
+    appServicePlanName: 'plan-token-range-${uniqueId}'
+    location: location
+    keyVaultName: keyVault.outputs.name
+  }
+}
+
 module cosmosDb 'modules/storage/cosmos-db.bicep' = {
   name: 'cosmosDbDeployment'
   params: {
