@@ -10,4 +10,8 @@
     <Project Path="Api/tests/UrlShortener.Api.Core.Tests/UrlShortener.Api.Core.Tests.csproj" />
     <Project Path="Api/tests/UrlShortener.Tests/UrlShortener.Tests.csproj" />
   </Folder>
+  <Folder Name="/TokenRanges/" />
+  <Folder Name="/TokenRanges/src/">
+    <Project Path="TokenRanges/src/UrlShortener.TokenRangeService/UrlShortener.TokenRangeService.csproj" />
+  </Folder>
 </Solution>

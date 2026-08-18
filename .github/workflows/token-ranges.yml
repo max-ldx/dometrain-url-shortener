@@ -1,14 +1,14 @@
-name: API
+name: Token Range Service
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - Api/**
+      - TokenRanges/**
   pull_request:
     branches: [ "main" ]
     paths:
-      - Api/**
+      - TokenRanges/**
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Dotnet publish
-      run: dotnet publish Api/src/UrlShortener.Api -c Release -o ${{ env.DOTNET_ROOT }}/myapp
+      run: dotnet publish TokenRanges/src/UrlShortener.TokenRangeService -c Release -o ${{ env.DOTNET_ROOT }}/myapp
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v7
       with:
@@ -49,8 +49,8 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ vars.API_RESOURCE_NAME }}
-          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          app-name: ${{ vars.TOKEN_RANGES_RESOURCE_NAME }}
+          publish-profile: ${{ secrets.AZURE_TOKENRANGES_PUBLISH_PROFILE }}
           package: .
 
   deploy-stg:
@@ -66,8 +66,8 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ vars.API_RESOURCE_NAME }}
-          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          app-name: ${{ vars.TOKEN_RANGES_RESOURCE_NAME }}
+          publish-profile: ${{ secrets.AZURE_TOKENRANGES_PUBLISH_PROFILE }}
           package: .
 
 
@@ -85,6 +85,6 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ vars.API_RESOURCE_NAME }}
-          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          app-name: ${{ vars.TOKEN_RANGES_RESOURCE_NAME }}
+          publish-profile: ${{ secrets.AZURE_TOKENRANGES_PUBLISH_PROFILE }}
           package: .
