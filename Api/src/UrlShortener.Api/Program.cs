@@ -34,6 +34,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGet("/", () => "API");
+
 app.MapPost("/api/urls",
     async (AddUrlHandler handler, AddUrlRequest request, CancellationToken cancellationToken) =>
     {
