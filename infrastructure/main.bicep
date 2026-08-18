@@ -71,6 +71,7 @@ module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' 
     keyVaultName: keyVault.outputs.name
     principalIds: [
       apiService.outputs.principalId
+      tokenRangeService.outputs.principalId
     ]
   }
 }
