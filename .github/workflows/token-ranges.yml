@@ -34,6 +34,11 @@ jobs:
       with:
         name: .net-app
         path: ${{ env.DOTNET_ROOT }}/myapp
+    - name: Upload Sql artifact for db deployment
+      uses: actions/upload-artifact@v7
+      with:
+        name: pg-script
+        path: TokenRanges/tests/UrlShortener.TokenRangeService.Tests/Table.sql
 
   deploy-dev:
     runs-on: ubuntu-latest
@@ -45,6 +50,24 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: .net-app
+
+      - name: Download db artifact from build job
+        uses: actions/download-artifact@v8
+        with:
+          name: pg-script
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+            
+      - name: Deploy Database Schema
+        env:
+          PGHOST: ${{ secrets.POSTGRES_HOST }}
+          PGDATABASE: ranges
+          PGUSER: ${{ secrets.POSTGRES_USER }}
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        run: psql -f Table.sql
       
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -63,13 +86,30 @@ jobs:
         with:
           name: .net-app
 
+      - name: Download db artifact from build job
+        uses: actions/download-artifact@v8
+        with:
+          name: pg-script
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+            
+      - name: Deploy Database Schema
+        env:
+          PGHOST: ${{ secrets.POSTGRES_HOST }}
+          PGDATABASE: ranges
+          PGUSER: ${{ secrets.POSTGRES_USER }}
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        run: psql -f Table.sql
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ vars.TOKEN_RANGES_RESOURCE_NAME }}
           publish-profile: ${{ secrets.AZURE_TOKENRANGES_PUBLISH_PROFILE }}
           package: .
-
 
   deploy-prd:
     runs-on: ubuntu-latest
@@ -81,6 +121,24 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: .net-app
+
+      - name: Download db artifact from build job
+        uses: actions/download-artifact@v8
+        with:
+          name: pg-script
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+            
+      - name: Deploy Database Schema
+        env:
+          PGHOST: ${{ secrets.POSTGRES_HOST }}
+          PGDATABASE: ranges
+          PGUSER: ${{ secrets.POSTGRES_USER }}
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        run: psql -f Table.sql
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3

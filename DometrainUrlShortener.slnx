@@ -14,4 +14,7 @@
   <Folder Name="/TokenRanges/src/">
     <Project Path="TokenRanges/src/UrlShortener.TokenRangeService/UrlShortener.TokenRangeService.csproj" />
   </Folder>
+  <Folder Name="/TokenRanges/tests/">
+    <Project Path="TokenRanges/tests/UrlShortener.TokenRangeService.Tests/UrlShortener.TokenRangeService.Tests.csproj" />
+  </Folder>
 </Solution>
