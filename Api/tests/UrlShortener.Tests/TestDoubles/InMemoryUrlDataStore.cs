@@ -1,6 +1,6 @@
 using UrlShortener.Core.Urls.Add;
 
-namespace UrlShortener.Tests;
+namespace UrlShortener.Tests.TestDoubles;
 
 public class InMemoryUrlDataStore : Dictionary<string, ShortenedUrl>, IUrlDataStore
 {
