@@ -63,6 +63,26 @@ module tokenRangeService 'modules/compute/appservice.bicep' = {
   }
 }
 
+module redirectApiService 'modules/compute/appservice.bicep' = {
+  name: 'redirectApiServiceDeployment'
+  params: {
+    appName: 'redirect-api-${uniqueId}'
+    appServicePlanName: 'plan-redirect-${uniqueId}'
+    location: location
+    keyVaultName: keyVaultName
+    appSettings: [
+      {
+        name: 'DatabaseName'
+        value: 'urls'
+      }
+      {
+        name: 'ContainerName'
+        value: 'items'
+      }
+    ]
+  }
+}
+
 module postgres 'modules/storage/postgresql.bicep' = {
   name: 'postgresDeployment'
   params: {
@@ -93,6 +113,7 @@ module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' 
     principalIds: [
       apiService.outputs.principalId
       tokenRangeService.outputs.principalId
+      redirectApiService.outputs.principalId
     ]
   }
 }
