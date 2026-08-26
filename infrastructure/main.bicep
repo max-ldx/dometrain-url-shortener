@@ -146,6 +146,7 @@ module redisCache 'modules/storage/redis-cache.bicep' = {
     name: 'redis-cache-${uniqueId}'
     location: location
     keyVaultName: keyVaultName
+    appPrincipalId: redirectApiService.outputs.principalId
   }
   dependsOn: [
     keyVault

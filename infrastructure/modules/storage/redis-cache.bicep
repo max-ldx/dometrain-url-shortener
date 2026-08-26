@@ -1,6 +1,7 @@
 param name string
 param location string
 param keyVaultName string
+param appPrincipalId string
 
 resource redis 'Microsoft.Cache/redisEnterprise@2025-07-01' = {
   name: name
@@ -21,6 +22,18 @@ resource redisDatabase 'Microsoft.Cache/redisEnterprise/databases@2025-07-01' = 
     clusteringPolicy: 'EnterpriseCluster'
     evictionPolicy: 'VolatileLRU'
     port: 10000
+    accessKeysAuthentication: 'Disabled'
+  }
+}
+
+resource redisAccessPolicyAssignment 'Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments@2025-07-01' = {
+  parent: redisDatabase
+  name: 'appEntraPolicy'
+  properties: {
+    accessPolicyName: 'default' // Politique intégrée autorisant les commandes courantes
+    user: {
+      objectId: appPrincipalId
+    }
   }
 }
 
@@ -32,7 +45,7 @@ resource redisCacheConnectionString 'Microsoft.KeyVault/vaults/secrets@2026-02-0
   parent: keyVault
   name: 'Redis--ConnectionString'
   properties: {
-    value: '${redis.properties.hostName}:10000,password=${redisDatabase.listKeys().primaryKey},ssl=True,abortConnect=False'
+    value: '${redis.properties.hostName}:10000,ssl=True,abortConnect=False'
   }
 }
 
