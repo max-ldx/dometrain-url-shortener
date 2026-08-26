@@ -15,8 +15,8 @@ public class AssignTokenRangeScenarios(Fixture fixture) : IClassFixture<Fixture>
         var response = await _client.PostAsJsonAsync("/assign", new AssignTokenRangeRequest("tests"));
         var tokenRange = await response.Content.ReadFromJsonAsync<TokenRangeResponse>();
 
-        tokenRange.Start.Should().BeGreaterThan(0);
-        tokenRange.End.Should().BeGreaterThan(tokenRange.Start);
+        tokenRange?.Start.Should().BeGreaterThan(0);
+        tokenRange?.End.Should().BeGreaterThan(tokenRange.Start);
     }
 
     [Fact]
