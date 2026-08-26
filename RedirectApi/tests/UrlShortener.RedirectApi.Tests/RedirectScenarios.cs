@@ -6,14 +6,15 @@ using UrlShortener.RedirectApi.Tests.TestDoubles;
 
 namespace UrlShortener.RedirectApi.Tests;
 
-public class RedirectScenarios(ApiFixture fixture) : IClassFixture<ApiFixture>
+[Collection("Api collection")]
+public class RedirectScenarios(ApiFixture fixture)
 {
     private readonly HttpClient _client = fixture.CreateClient(new WebApplicationFactoryClientOptions
     {
         AllowAutoRedirect = false
     });
 
-    private InMemoryShortenedUrlReader _storage = fixture.ShortenedUrlReader;
+    private readonly InMemoryShortenedUrlReader _storage = fixture.ShortenedUrlReader;
 
     [Fact]
     public async Task ShouldReturn301RedirectWithUrlWhenShortUrlExists()
