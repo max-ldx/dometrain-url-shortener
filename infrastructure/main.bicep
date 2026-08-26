@@ -110,7 +110,7 @@ module cosmosDb 'modules/storage/cosmos-db.bicep' = {
     location: location
     kind: 'GlobalDocumentDB'
     databaseName: 'urls'
-    locationName: 'Spain Central'
+    locationName: 'France Central'
     keyVaultName: keyVaultName
   }
   dependsOn: [
