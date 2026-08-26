@@ -8,7 +8,7 @@ public class TokenRangeScenarios
     public void WhenStartTokenIsGreaterThanEndTokenTheThrowsException()
     {
         var act = () => new TokenRange(10, 5);
-        
+
         act.Should().Throw<ArgumentException>().WithMessage("End must be greater than or equal to start.");
     }
 }

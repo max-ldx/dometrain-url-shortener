@@ -7,12 +7,13 @@ namespace UrlShortener.TokenRangeService.Tests;
 public class Fixture : WebApplicationFactory<ITokenRangeAssemblyMarker>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgresContainer;
-    private string ConnectionString => _postgresContainer.GetConnectionString();
 
     public Fixture()
     {
         _postgresContainer = new PostgreSqlBuilder().Build();
     }
+
+    private string ConnectionString => _postgresContainer.GetConnectionString();
 
     public async Task InitializeAsync()
     {
@@ -21,6 +22,12 @@ public class Fixture : WebApplicationFactory<ITokenRangeAssemblyMarker>, IAsyncL
         Environment.SetEnvironmentVariable("Postgres__ConnectionString", ConnectionString);
 
         await InitializeSqlTable();
+    }
+
+    public new async Task DisposeAsync()
+    {
+        await _postgresContainer.StopAsync();
+        await base.DisposeAsync();
     }
 
     private async Task InitializeSqlTable()
@@ -32,11 +39,5 @@ public class Fixture : WebApplicationFactory<ITokenRangeAssemblyMarker>, IAsyncL
 
         await using var command = new NpgsqlCommand(tableSql, connection);
         await command.ExecuteNonQueryAsync();
-    }
-
-    public new async Task DisposeAsync()
-    {
-        await _postgresContainer.StopAsync();
-        await base.DisposeAsync();
     }
 }

@@ -9,8 +9,8 @@ namespace UrlShortener.Api.Core.Tests.Urls;
 public class AddUrlScenarios
 {
     private readonly AddUrlHandler _handler;
-    private readonly InMemoryUrlDataStore _urlDataStore;
     private readonly FakeTimeProvider _timeProvider;
+    private readonly InMemoryUrlDataStore _urlDataStore;
 
     public AddUrlScenarios()
     {

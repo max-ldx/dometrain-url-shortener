@@ -28,22 +28,19 @@ public class TokenManager(
         }
     }
 
-    private async Task AssignNewRangeAsync(CancellationToken cancellationToken)
-    {
-        var range = await client.AssignRangeAsync(_machineIdentifier, cancellationToken);
-
-        if (range is null)
-        {
-            throw new Exception("No tokens assigned");
-        }
-
-        tokenProvider.AssignRange(range);
-        logger.LogInformation("Assigned range: {Start}-{End}", range.Start, range.End);
-    }
-
     public Task StopAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Stopping token manager");
         return Task.CompletedTask;
+    }
+
+    private async Task AssignNewRangeAsync(CancellationToken cancellationToken)
+    {
+        var range = await client.AssignRangeAsync(_machineIdentifier, cancellationToken);
+
+        if (range is null) throw new Exception("No tokens assigned");
+
+        tokenProvider.AssignRange(range);
+        logger.LogInformation("Assigned range: {Start}-{End}", range.Start, range.End);
     }
 }

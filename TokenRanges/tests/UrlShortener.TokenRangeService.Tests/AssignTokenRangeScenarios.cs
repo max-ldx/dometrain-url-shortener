@@ -47,7 +47,7 @@ public class AssignTokenRangeScenarios(Fixture fixture) : IClassFixture<Fixture>
             if (response.IsSuccessStatusCode)
             {
                 var range =
-                    await response.Content.ReadFromJsonAsync<TokenRangeResponse>(cancellationToken: cancellationToken);
+                    await response.Content.ReadFromJsonAsync<TokenRangeResponse>(cancellationToken);
                 ranges.Add(range!);
             }
         });

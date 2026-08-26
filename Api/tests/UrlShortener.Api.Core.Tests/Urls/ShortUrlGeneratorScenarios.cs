@@ -11,21 +11,21 @@ public class ShortUrlGeneratorScenarios
         var tokenProvider = new TokenProvider();
         tokenProvider.AssignRange(0, 10);
         var shortUrlGenerator = new ShortUrlGenerator(tokenProvider);
-        
+
         var shortUrl = shortUrlGenerator.GenerateUniqueUrl();
-            
+
         shortUrl.Should().Be("0");
     }
-    
+
     [Fact]
     public void ShouldReturnShortUrlFor10001()
     {
         var tokenProvider = new TokenProvider();
         tokenProvider.AssignRange(10_001, 20_000);
         var shortUrlGenerator = new ShortUrlGenerator(tokenProvider);
-        
+
         var shortUrl = shortUrlGenerator.GenerateUniqueUrl();
-            
+
         shortUrl.Should().Be("2bJ");
     }
 }

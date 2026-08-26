@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
 using UrlShortener.Core.Urls.Add;
@@ -28,10 +27,14 @@ public class CosmosDbUrlDataStore(Container container) : IUrlDataStore
 
         public string PartitionKey => ShortUrl[..1]; // Cosmos DB Partition Key
 
-        public static implicit operator ShortenedUrl(ShortenedUrlCosmos url) =>
-            new(new Uri(url.LongUrl), url.ShortUrl, url.CreatedBy, url.CreatedOn);
+        public static implicit operator ShortenedUrl(ShortenedUrlCosmos url)
+        {
+            return new ShortenedUrl(new Uri(url.LongUrl), url.ShortUrl, url.CreatedBy, url.CreatedOn);
+        }
 
-        public static explicit operator ShortenedUrlCosmos(ShortenedUrl url) =>
-            new(url.LongUrl.ToString(), url.ShortUrl, url.CreatedBy, url.CreatedOn);
+        public static explicit operator ShortenedUrlCosmos(ShortenedUrl url)
+        {
+            return new ShortenedUrlCosmos(url.LongUrl.ToString(), url.ShortUrl, url.CreatedBy, url.CreatedOn);
+        }
     }
 }

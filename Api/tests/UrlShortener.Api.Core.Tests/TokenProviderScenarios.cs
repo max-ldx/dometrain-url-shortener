@@ -57,10 +57,7 @@ public class TokenProviderScenarios
         var eventTriggered = false;
         _provider.ReachingRangeLimit += (sender, args) => eventTriggered = true;
 
-        for (var i = 0; i < 8; i++)
-        {
-            _provider.GetToken();
-        }
+        for (var i = 0; i < 8; i++) _provider.GetToken();
 
         eventTriggered.Should().BeTrue();
     }

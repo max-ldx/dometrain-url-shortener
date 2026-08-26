@@ -1,25 +1,31 @@
 <Solution>
-  <Folder Name="/Api/" />
-  <Folder Name="/Api/src/">
-    <File Path="Api\src\TestList.txt" />
-    <Project Path="Api/src/UrlShortener.Core/UrlShortener.Core.csproj" />
-    <Project Path="Api/src/UrlShortener.Infrastructure/UrlShortener.Infrastructure.csproj" />
-    <Project Path="Api\src\UrlShortener.Api\UrlShortener.Api.csproj" />
-  </Folder>
-  <Folder Name="/Api/tests/">
-    <Project Path="Api/tests/UrlShortener.Api.Core.Tests/UrlShortener.Api.Core.Tests.csproj" />
-    <Project Path="Api/tests/UrlShortener.Tests/UrlShortener.Tests.csproj" />
-  </Folder>
-  <Folder Name="/RedirectApi/" />
-  <Folder Name="/RedirectApi/src/">
-    <Project Path="RedirectApi/src/UrlShortener.RedirectApi/UrlShortener.RedirectApi.csproj" />
-  </Folder>
-  <Folder Name="/RedirectApi/tests/" />
-  <Folder Name="/TokenRanges/" />
-  <Folder Name="/TokenRanges/src/">
-    <Project Path="TokenRanges/src/UrlShortener.TokenRangeService/UrlShortener.TokenRangeService.csproj" />
-  </Folder>
-  <Folder Name="/TokenRanges/tests/">
-    <Project Path="TokenRanges/tests/UrlShortener.TokenRangeService.Tests/UrlShortener.TokenRangeService.Tests.csproj" />
-  </Folder>
+    <Folder Name="/Api/"/>
+    <Folder Name="/Api/src/">
+        <File Path="Api\src\TestList.txt"/>
+        <Project Path="Api/src/UrlShortener.Core/UrlShortener.Core.csproj"/>
+        <Project Path="Api/src/UrlShortener.Infrastructure/UrlShortener.Infrastructure.csproj"/>
+        <Project Path="Api\src\UrlShortener.Api\UrlShortener.Api.csproj"/>
+    </Folder>
+    <Folder Name="/Api/tests/">
+        <Project Path="Api/tests/UrlShortener.Api.Core.Tests/UrlShortener.Api.Core.Tests.csproj"/>
+        <Project Path="Api/tests/UrlShortener.Tests/UrlShortener.Tests.csproj"/>
+    </Folder>
+    <Folder Name="/Libraries/">
+        <Project Path="Libraries/UrlShortener.Libraries.Testing/UrlShortener.Libraries.Testing.csproj"/>
+    </Folder>
+    <Folder Name="/RedirectApi/"/>
+    <Folder Name="/RedirectApi/src/">
+        <Project Path="RedirectApi/src/UrlShortener.RedirectApi/UrlShortener.RedirectApi.csproj"/>
+    </Folder>
+    <Folder Name="/RedirectApi/tests/">
+        <Project Path="RedirectApi/tests/UrlShortener.RedirectApi.Tests/UrlShortener.RedirectApi.Tests.csproj"/>
+    </Folder>
+    <Folder Name="/TokenRanges/"/>
+    <Folder Name="/TokenRanges/src/">
+        <Project Path="TokenRanges/src/UrlShortener.TokenRangeService/UrlShortener.TokenRangeService.csproj"/>
+    </Folder>
+    <Folder Name="/TokenRanges/tests/">
+        <Project
+                Path="TokenRanges/tests/UrlShortener.TokenRangeService.Tests/UrlShortener.TokenRangeService.Tests.csproj"/>
+    </Folder>
 </Solution>

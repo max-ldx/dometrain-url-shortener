@@ -27,13 +27,11 @@ internal class TokenRangeManager(string connectionString)
 
         await using var reader = await command.ExecuteReaderAsync();
         if (await reader.ReadAsync())
-        {
             return new TokenRangeResponse
             (
                 reader.GetInt64(2),
                 reader.GetInt64(3)
             );
-        }
 
         throw new FailedToAssignRangeException("Failed to assign range.");
     }

@@ -2,34 +2,48 @@ namespace UrlShortener.Core;
 
 public class Result<TValue>
 {
-    private readonly TValue? _value;
-    private readonly Error _error;
-    private readonly bool _isSuccess;
-
-    public bool Succeeded => _isSuccess;
-    public TValue? Value => _value;
-    public Error Error => _error;
-
     private Result(TValue value)
     {
-        _isSuccess = true;
-        _value = value;
-        _error = Error.None;
+        Succeeded = true;
+        Value = value;
+        Error = Error.None;
     }
 
     private Result(Error error)
     {
-        _isSuccess = false;
-        _value = default;
-        _error = error;
+        Succeeded = false;
+        Value = default;
+        Error = error;
     }
-    
-    public static Result<TValue> Success(TValue value) => new(value);
-    public static Result<TValue> Failure(Error error) => new(error);
 
-    public static implicit operator Result<TValue>(TValue value) => new(value);
-    public static implicit operator Result<TValue>(Error error) => new(error);
+    public bool Succeeded { get; }
 
-    public TResult Match<TResult>(Func<TValue, TResult> success, Func<Error, TResult> failure) =>
-        _isSuccess ? success(_value!) : failure(_error);
+    public TValue? Value { get; }
+
+    public Error Error { get; }
+
+    public static Result<TValue> Success(TValue value)
+    {
+        return new Result<TValue>(value);
+    }
+
+    public static Result<TValue> Failure(Error error)
+    {
+        return new Result<TValue>(error);
+    }
+
+    public static implicit operator Result<TValue>(TValue value)
+    {
+        return new Result<TValue>(value);
+    }
+
+    public static implicit operator Result<TValue>(Error error)
+    {
+        return new Result<TValue>(error);
+    }
+
+    public TResult Match<TResult>(Func<TValue, TResult> success, Func<Error, TResult> failure)
+    {
+        return Succeeded ? success(Value!) : failure(Error);
+    }
 }
