@@ -2,20 +2,25 @@ param name string
 param location string
 param keyVaultName string
 
-resource redis 'Microsoft.Cache/redis@2024-11-01' = {
+resource redis 'Microsoft.Cache/redisEnterprise@2025-07-01' = {
   name: name
   location: location
+  sku: {
+    name: 'Balanced_B0'
+  }
   properties: {
-    sku: {
-      name: 'Basic'
-      family: 'C'
-      capacity: 0
-    }
-    redisVersion: '6.0'
+    minimumTlsVersion: '1.2'
     publicNetworkAccess: 'Enabled'
-    redisConfiguration: {
-      'aad-enabled': 'True'
-    }
+  }
+}
+
+resource redisDatabase 'Microsoft.Cache/redisEnterprise/databases@2025-07-01' = {
+  parent: redis
+  name: 'default'
+  properties: {
+    clusteringPolicy: 'EnterpriseCluster'
+    evictionPolicy: 'VolatileLRU'
+    port: 10000
   }
 }
 
@@ -27,7 +32,7 @@ resource redisCacheConnectionString 'Microsoft.KeyVault/vaults/secrets@2026-02-0
   parent: keyVault
   name: 'Redis--ConnectionString'
   properties: {
-    value: '${redis.name}.redis.cache.windows.net:6380,password=${redis.listKeys().primaryKey},ssl=True,abortConnect=False'
+    value: '${redis.properties.hostName}:10000,password=${redisDatabase.listKeys().primaryKey},ssl=True,abortConnect=False'
   }
 }
 
