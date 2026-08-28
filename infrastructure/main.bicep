@@ -118,6 +118,43 @@ module cosmosDb 'modules/storage/cosmos-db.bicep' = {
   ]
 }
 
+module storageAccount 'modules/storage/storage-account.bicep' = {
+  name: 'storageAccountDeployment'
+  params: {
+    name: 'storage${uniqueId}'
+    location: location
+  }
+}
+
+module cosmosTriggerFunction 'modules/compute/function.bicep' = {
+  name: 'cosmosTriggerFunctionDeployment'
+  params: {
+    appServicePlanName: 'plan-cosmos-trigger-${uniqueId}'
+    name: 'cosmos-trigger-function-${uniqueId}'
+    location: location
+    keyVaultName: keyVaultName
+    storageAccountConnectionString: storageAccount.outputs.storageConnectionString
+    appSettings: [
+      {
+        name: 'CosmosDbConnection'
+        value: '@Microsoft.KeyVault(SecretUri=https://${keyVaultName}.vault.azure.net/secrets/CosmosDb--ConnectionString/)'
+      }
+      {
+        name: 'TargetDatabaseName'
+        value: 'urls'
+      }
+      {
+        name: 'TargetContainerName'
+        value: 'byUser'
+      }
+    ]
+  }
+  dependsOn: [
+    keyVault
+    cosmosDb
+  ]
+}
+
 module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' = {
   name: 'keyVaultRoleAssignmentDeployment'
   params: {
@@ -126,6 +163,7 @@ module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' 
       apiService.outputs.principalId
       tokenRangeService.outputs.principalId
       redirectApiService.outputs.principalId
+      cosmosTriggerFunction.outputs.principalId
     ]
   }
   dependsOn: [
