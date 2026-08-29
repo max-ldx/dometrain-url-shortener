@@ -1,42 +1,44 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace UrlShortener.CosmosDbTriggerFunction;
 
-public class ShortUrlPropagation
+public class ShortUrlPropagation(ILogger<ShortUrlPropagation> logger, Container container)
 {
-    private readonly ILogger<ShortUrlPropagation> _logger;
-
-    public ShortUrlPropagation(ILogger<ShortUrlPropagation> logger)
-    {
-        _logger = logger;
-    }
-
     [Function("ShortUrlPropagation")]
-    public void Run([CosmosDBTrigger(
-        databaseName: "urls",
-        containerName: "items",
-        Connection = "CosmosDbConnection",
-        LeaseContainerName = "leases",
-        CreateLeaseContainerIfNotExists = true)] IReadOnlyList<MyDocument> input)
+    public async Task Run([CosmosDBTrigger(
+            databaseName: "urls",
+            containerName: "items",
+            Connection = "CosmosDbConnection",
+            LeaseContainerName = "leases",
+            CreateLeaseContainerIfNotExists = true)]
+        IReadOnlyList<UrlDocument> input)
     {
-        if (input != null && input.Count > 0)
+        if (input.Count <= 0) return;
+        foreach (var document in input)
         {
-            _logger.LogInformation("Documents modified: " + input.Count);
-            _logger.LogInformation("First document Id: " + input[0].id);
+            logger.LogInformation("Short Url {ShortUrl}", document.Id);
+
+            try
+            {
+                await container.UpsertItemAsync(document, new PartitionKey(document.CreatedBy));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error writing to Cosmos DB");
+                throw;
+            }
         }
     }
-}
 
-public class MyDocument
-{
-    public string id { get; set; }
-
-    public string Text { get; set; }
-
-    public int Number { get; set; }
-
-    public bool Boolean { get; set; }
+    public class UrlDocument
+    {
+        public string Id { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public string LongUrl { get; set; }
+    }
 }
