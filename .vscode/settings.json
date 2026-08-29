@@ -1,0 +1,8 @@
+{
+    "azureFunctions.deploySubpath": "CosmosDbTrigger/src/UrlShortener.CosmosDbTriggerFunction/bin/Release/net10.0/publish",
+    "azureFunctions.projectLanguage": "C#",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.projectSubpath": "CosmosDbTrigger/src/UrlShortener.CosmosDbTriggerFunction",
+    "azureFunctions.preDeployTask": "publish (functions)"
+}
