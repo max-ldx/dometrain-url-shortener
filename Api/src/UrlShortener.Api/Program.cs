@@ -1,5 +1,3 @@
-using System.Security.Authentication;
-using System.Security.Claims;
 using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -95,13 +93,16 @@ app.MapPost("/api/urls",
             : Results.Created($"/api/urls/{result.Value!.ShortUrl}", result.Value);
     });
 
-app.MapGet("/api/urls", async (HttpContext context, IUserUrlsReader reader, CancellationToken cancellationToken) =>
-{
-    var email = context.User.GetUserEmail();
+app.MapGet("/api/urls",
+    async (HttpContext context, ListUrlsHandler handler, int? pageSize, string? continuationToken,
+        CancellationToken cancellationToken) =>
+    {
+        var email = context.User.GetUserEmail();
 
-    var urls = await reader.GetAsync(email, cancellationToken);
+        var request = new ListUrlsRequest(email, pageSize, continuationToken);
+        var urls = await handler.HandleAsync(request, cancellationToken);
 
-    return urls;
-});
+        return urls;
+    });
 
 app.Run();
