@@ -12,8 +12,8 @@ public class AssignTokenRangeScenarios(Fixture fixture) : IClassFixture<Fixture>
     [Fact]
     public async Task ShouldReturnRangeWhenRequested()
     {
-        var response = await _client.PostAsJsonAsync("/assign", new AssignTokenRangeRequest("tests"));
-        var tokenRange = await response.Content.ReadFromJsonAsync<TokenRangeResponse>();
+        var response = await _client.PostAsJsonAsync("/assign", new AssignTokenRangeRequest("tests"), cancellationToken: TestContext.Current.CancellationToken);
+        var tokenRange = await response.Content.ReadFromJsonAsync<TokenRangeResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         tokenRange?.Start.Should().BeGreaterThan(0);
         tokenRange?.End.Should().BeGreaterThan(tokenRange.Start);
@@ -22,14 +22,14 @@ public class AssignTokenRangeScenarios(Fixture fixture) : IClassFixture<Fixture>
     [Fact]
     public async Task ShouldNotRepeatRangeWhenRequested()
     {
-        var requestResponse1 = await _client.PostAsJsonAsync("/assign", new AssignTokenRangeRequest("tests"));
-        var requestResponse2 = await _client.PostAsJsonAsync("/assign", new AssignTokenRangeRequest("tests"));
+        var requestResponse1 = await _client.PostAsJsonAsync("/assign", new AssignTokenRangeRequest("tests"), cancellationToken: TestContext.Current.CancellationToken);
+        var requestResponse2 = await _client.PostAsJsonAsync("/assign", new AssignTokenRangeRequest("tests"), cancellationToken: TestContext.Current.CancellationToken);
 
         requestResponse1.StatusCode.Should().Be(HttpStatusCode.OK);
         requestResponse2.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var tokenRange1 = await requestResponse1.Content.ReadFromJsonAsync<TokenRangeResponse>();
-        var tokenRange2 = await requestResponse2.Content.ReadFromJsonAsync<TokenRangeResponse>();
+        var tokenRange1 = await requestResponse1.Content.ReadFromJsonAsync<TokenRangeResponse>(cancellationToken: TestContext.Current.CancellationToken);
+        var tokenRange2 = await requestResponse2.Content.ReadFromJsonAsync<TokenRangeResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         tokenRange2!.Start.Should().BeGreaterThan(tokenRange1!.End);
     }

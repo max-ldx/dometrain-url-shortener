@@ -20,7 +20,7 @@ public class ApiFixture : WebApplicationFactory<IRedirectApiAssemblyMarker>, IAs
 
     public InMemoryShortenedUrlReader ShortenedUrlReader { get; } = new();
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         await _redisContainer.StartAsync();
         Environment.SetEnvironmentVariable("Redis__ConnectionString", RedisConnectionString);

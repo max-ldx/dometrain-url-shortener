@@ -5,7 +5,8 @@ using UrlShortener.Core.Urls.Add;
 
 namespace UrlShortener.Tests;
 
-public class AddUrlFeature(ApiFixture fixture) : IClassFixture<ApiFixture>
+[Collection("Api collection")]
+public class AddUrlFeature(ApiFixture fixture)
 {
     private readonly HttpClient _client = fixture.CreateClient();
 
@@ -13,10 +14,13 @@ public class AddUrlFeature(ApiFixture fixture) : IClassFixture<ApiFixture>
     public async Task GivenLongUrlShouldReturnShortUrl()
     {
         var response = await _client.PostAsJsonAsync("/api/urls",
-            new AddUrlRequest(new Uri("https://dometrain.com"), ""));
+            new AddUrlRequest(new Uri("https://dometrain.com"), ""),
+            cancellationToken: TestContext.Current.CancellationToken);
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
-        var addUrlResponse = await response.Content.ReadFromJsonAsync<AddUrlResponse>();
+        var addUrlResponse =
+            await response.Content.ReadFromJsonAsync<AddUrlResponse>(
+                cancellationToken: TestContext.Current.CancellationToken);
         addUrlResponse!.ShortUrl.Should().NotBeNull();
     }
 }

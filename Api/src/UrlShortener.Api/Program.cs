@@ -7,6 +7,7 @@ using Microsoft.Identity.Web;
 using UrlShortener.Api;
 using UrlShortener.Api.Extensions;
 using UrlShortener.Core.Urls.Add;
+using UrlShortener.Core.Urls.List;
 using UrlShortener.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ builder.Services
 
 builder.Services
     .AddUrlFeature()
+    .AddListUrlsFeature()
     .AddCosmosUrlDataStore(builder.Configuration);
 
 builder.Services.AddHttpClient("TokenRangeService",
@@ -79,8 +81,7 @@ app.MapGet("/", () => "API").AllowAnonymous();
 app.MapPost("/api/urls",
     async (AddUrlHandler handler, AddUrlRequest request, HttpContext context, CancellationToken cancellationToken) =>
     {
-        var email = context.User.FindFirstValue("preferred_username") ??
-                    throw new AuthenticationException("Missing preferred_username claim");
+        var email = context.User.GetUserEmail();
 
         var requestWithUser = request with
         {
@@ -93,5 +94,14 @@ app.MapPost("/api/urls",
             ? Results.BadRequest(result.Error)
             : Results.Created($"/api/urls/{result.Value!.ShortUrl}", result.Value);
     });
+
+app.MapGet("/api/urls", async (HttpContext context, IUserUrlsReader reader, CancellationToken cancellationToken) =>
+{
+    var email = context.User.GetUserEmail();
+
+    var urls = await reader.GetAsync(email, cancellationToken);
+
+    return urls;
+});
 
 app.Run();

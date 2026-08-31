@@ -22,7 +22,7 @@ public class RedirectScenarios(ApiFixture fixture)
         const string shortUrl = "abc123";
         _storage.Add(shortUrl, new ReadLongUrlResponse(true, "https://dometrain.com"));
 
-        var response = await _client.GetAsync($"/r/{shortUrl}");
+        var response = await _client.GetAsync($"/r/{shortUrl}", TestContext.Current.CancellationToken);
 
         response.StatusCode.Should().Be(HttpStatusCode.MovedPermanently);
         response.Headers.Location.Should().Be("https://dometrain.com");
@@ -33,7 +33,7 @@ public class RedirectScenarios(ApiFixture fixture)
     {
         const string shortUrl = "non-existing";
 
-        var response = await _client.GetAsync($"/r/{shortUrl}");
+        var response = await _client.GetAsync($"/r/{shortUrl}", TestContext.Current.CancellationToken);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }

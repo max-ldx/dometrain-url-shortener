@@ -11,7 +11,7 @@ public class Fixture : WebApplicationFactory<ITokenRangeAssemblyMarker>, IAsyncL
 
     private string ConnectionString => _postgresContainer.GetConnectionString();
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         await _postgresContainer.StartAsync();
 

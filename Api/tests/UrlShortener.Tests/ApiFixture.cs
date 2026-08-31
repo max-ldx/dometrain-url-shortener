@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using UrlShortener.Api;
 using UrlShortener.Core.Urls.Add;
+using UrlShortener.Core.Urls.List;
 using UrlShortener.Libraries.Testing.Extensions;
 using UrlShortener.Tests.TestDoubles;
 
@@ -17,8 +18,13 @@ public class ApiFixture : WebApplicationFactory<IApiAssemblyMarker>
     {
         builder.ConfigureTestServices(services =>
             {
+                var inMemoryUrlDataStore = new InMemoryUrlDataStore();
+
                 services.Remove<IUrlDataStore>();
-                services.AddSingleton<IUrlDataStore>(new InMemoryUrlDataStore());
+                services.AddSingleton<IUrlDataStore>(inMemoryUrlDataStore);
+
+                services.Remove<IUserUrlsReader>();
+                services.AddSingleton<IUserUrlsReader>(inMemoryUrlDataStore);
 
                 services.Remove<ITokenRangeApiClient>();
                 services.AddSingleton<ITokenRangeApiClient, FakeTokenRangeApiClient>();
