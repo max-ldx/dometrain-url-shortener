@@ -183,6 +183,10 @@ module entraApp 'modules/identity/entra-app.bicep' = {
   name: 'entraAppWeb'
   params: {
     applicationName: 'web-${uniqueId}'
+    spaRedirectUris: [
+      'http://localhost:5173/'
+      staticWebApp.outputs.url
+    ]
   }
 }
 
@@ -203,6 +207,6 @@ module staticWebApp 'modules/web/static-web-app.bicep' = {
   name: 'staticWebAppDeployment'
   params: {
     name: 'web-app-${uniqueId}'
-    location: location
+    location: 'eastus2'
   }
 }
