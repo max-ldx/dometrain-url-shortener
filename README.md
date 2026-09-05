@@ -15,7 +15,7 @@ az login
 ### Create Resource Group
 
 ```bash
-az group create --name dometrain-urlshortener-dev --location westeurope
+az group create --name dometrain-urlshortener-dev --location belgiumcentral
 ```
 
 ### Deploy Bicep
