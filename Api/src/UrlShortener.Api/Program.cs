@@ -113,7 +113,7 @@ app.MapPost("/api/urls",
         return !result.Succeeded
             ? Results.BadRequest(result.Error)
             : Results.Created($"/api/urls/{result.Value!.ShortUrl}", result.Value);
-    });
+    }).RequireAuthorization("AuthZPolicy");
 
 app.MapGet("/api/urls",
     async (HttpContext context, ListUrlsHandler handler, int? pageSize, string? continuationToken,
@@ -125,6 +125,6 @@ app.MapGet("/api/urls",
         var urls = await handler.HandleAsync(request, cancellationToken);
 
         return urls;
-    });
+    }).RequireAuthorization("AuthZPolicy");
 
 app.Run();
