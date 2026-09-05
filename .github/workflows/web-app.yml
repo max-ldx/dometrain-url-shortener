@@ -33,9 +33,9 @@ jobs:
         app_location: ${{ env.APP_LOCATION }}
         output_location: "dist" 
       env: 
-        REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
-        REACT_APP_AUTHORITY: ${{ secrets.REACT_APP_AUTHORITY }}
-        REACT_APP_API_ENDPOINT: ${{ vars.REACT_APP_API_ENDPOINT }}
+        VITE_APP_CLIENT_ID: ${{ secrets.VITE_APP_CLIENT_ID }}
+        VITE_APP_AUTHORITY: ${{ secrets.VITE_APP_AUTHORITY }}
+        VITE_APP_API_ENDPOINT: ${{ vars.VITE_APP_API_ENDPOINT }}
 
 
  build_and_deploy_stg:
@@ -57,9 +57,9 @@ jobs:
         app_location: ${{ env.APP_LOCATION }}
         output_location: "dist" 
       env: 
-        REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
-        REACT_APP_AUTHORITY: ${{ secrets.REACT_APP_AUTHORITY }}
-        REACT_APP_API_ENDPOINT: ${{ vars.REACT_APP_API_ENDPOINT }}
+        VITE_APP_CLIENT_ID: ${{ secrets.VITE_APP_CLIENT_ID }}
+        VITE_APP_AUTHORITY: ${{ secrets.VITE_APP_AUTHORITY }}
+        VITE_APP_API_ENDPOINT: ${{ vars.VITE_APP_API_ENDPOINT }}
 
           
  build_and_deploy_prd:
@@ -82,6 +82,6 @@ jobs:
           app_location: ${{ env.APP_LOCATION }}
           output_location: "dist" 
         env: 
-          REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
-          REACT_APP_AUTHORITY: ${{ secrets.REACT_APP_AUTHORITY }}
-          REACT_APP_API_ENDPOINT: ${{ vars.REACT_APP_API_ENDPOINT }}
+          VITE_APP_CLIENT_ID: ${{ secrets.VITE_APP_CLIENT_ID }}
+          VITE_APP_AUTHORITY: ${{ secrets.VITE_APP_AUTHORITY }}
+          VITE_APP_API_ENDPOINT: ${{ vars.VITE_APP_API_ENDPOINT }}
