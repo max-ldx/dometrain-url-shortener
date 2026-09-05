@@ -69,28 +69,29 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 
+var webAppEndpoints = builder.Configuration["WebAppEndpoints"];
+
+Console.WriteLine(
+    $"WebAppEndpoints at startup: '{webAppEndpoints ?? "NULL"}'");
+
+if (string.IsNullOrWhiteSpace(webAppEndpoints))
+{
+    throw new InvalidOperationException(
+        "WebAppEndpoints configuration is missing.");
+}
+
+var origins = webAppEndpoints
+    .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    .Select(origin => origin.TrimEnd('/'))
+    .ToArray();
+
+Console.WriteLine(
+    $"Configured origins: {string.Join(", ", origins)}");
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWebApp", policy =>
     {
-        var webAppEndpoints = builder.Configuration["WebAppEndpoints"];
-
-        Console.WriteLine($"WebAppEndpoints raw: '{webAppEndpoints}'");
-
-        if (webAppEndpoints is null)
-        {
-            Console.WriteLine("WebAppEndpoints is NULL");
-            return;
-        }
-
-        var origins = webAppEndpoints
-            .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(origin => origin.TrimEnd('/'))
-            .ToArray();
-
-        Console.WriteLine(
-            $"Configured CORS origins: [{string.Join(", ", origins.Select(x => $"'{x}'"))}]");
-
         policy
             .WithOrigins(origins)
             .AllowAnyMethod()
