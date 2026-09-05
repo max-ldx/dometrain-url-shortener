@@ -90,10 +90,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
-app.UseCors("AllowWebApp");
-
 app.UseHttpsRedirection();
 
+app.UseCors("AllowWebApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
