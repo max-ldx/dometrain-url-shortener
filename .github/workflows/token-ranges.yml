@@ -1,6 +1,7 @@
 name: Token Range Service
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
