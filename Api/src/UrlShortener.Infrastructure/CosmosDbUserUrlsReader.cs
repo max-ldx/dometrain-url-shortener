@@ -6,7 +6,7 @@ namespace UrlShortener.Infrastructure;
 
 public class CosmosDbUserUrlsReader(Container container) : IUserUrlsReader
 {
-    public async Task<ListUrlsResponse> GetAsync(string createdBy, int pageSize, string? continuationToken,
+    public async Task<UserUrls> GetAsync(string createdBy, int pageSize, string? continuationToken,
         CancellationToken cancellationToken)
     {
         var query = new QueryDefinition("SELECT * FROM c WHERE c.PartitionKey = @partitionKey")
@@ -40,7 +40,7 @@ public class CosmosDbUserUrlsReader(Container container) : IUserUrlsReader
             ? null
             : Convert.ToBase64String(Encoding.UTF8.GetBytes(resultContinuationToken));
 
-        return new ListUrlsResponse([.. results.Select(e => new UrlItem(e.ShortUrl, e.LongUrl, e.CreatedOn))],
+        return new UserUrls([.. results.Select(e => new UserUrlItem(e.ShortUrl, e.LongUrl, e.CreatedOn))],
             responseContinuationToken);
     }
 }

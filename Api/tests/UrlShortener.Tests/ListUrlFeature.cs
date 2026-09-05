@@ -35,7 +35,7 @@ public class ListUrlFeature(ApiFixture fixture)
         var urls = await getResponse.Content.ReadFromJsonAsync<ListUrlsResponse>(
             cancellationToken: TestContext.Current.CancellationToken);
 
-        urls?.Urls.Should().Contain(url => response != null && url.ShortUrl == response.ShortUrl);
+        urls?.Urls.Should().Contain(url => response != null && url.ShortUrl == response.ShortUrl.ToString());
     }
 
     [Fact]

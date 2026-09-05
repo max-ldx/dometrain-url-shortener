@@ -19,7 +19,8 @@ public class AddUrlScenarios
         var shortUrlGenerator = new ShortUrlGenerator(tokenProvider);
         _timeProvider = new FakeTimeProvider();
         _urlDataStore = new InMemoryUrlDataStore();
-        _handler = new AddUrlHandler(shortUrlGenerator, _urlDataStore, _timeProvider);
+        _handler = new AddUrlHandler(shortUrlGenerator, _urlDataStore, _timeProvider,
+            new RedirectLinkBuilder(new Uri("https://tests/")));
     }
 
     [Fact]
@@ -29,8 +30,8 @@ public class AddUrlScenarios
         var response = await _handler.HandleAsync(request, CancellationToken.None);
 
         response.Succeeded.Should().BeTrue();
-        response.Value!.ShortUrl.Should().NotBeEmpty();
-        response.Value!.ShortUrl.Should().Be("1");
+        response.Value!.Id.Should().NotBeEmpty();
+        response.Value!.Id.Should().Be("1");
     }
 
     [Fact]
@@ -41,7 +42,7 @@ public class AddUrlScenarios
         var response = await _handler.HandleAsync(request, CancellationToken.None);
 
         response.Succeeded.Should().BeTrue();
-        _urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
+        _urlDataStore.Should().ContainKey(response.Value!.Id);
     }
 
     [Fact]
@@ -52,9 +53,9 @@ public class AddUrlScenarios
         var response = await _handler.HandleAsync(request, CancellationToken.None);
 
         response.Succeeded.Should().BeTrue();
-        _urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
-        _urlDataStore[response.Value!.ShortUrl].CreatedBy.Should().Be(request.CreatedBy);
-        _urlDataStore[response.Value!.ShortUrl].CreatedOn.Should().Be(_timeProvider.GetUtcNow());
+        _urlDataStore.Should().ContainKey(response.Value!.Id);
+        _urlDataStore[response.Value!.Id].CreatedBy.Should().Be(request.CreatedBy);
+        _urlDataStore[response.Value!.Id].CreatedOn.Should().Be(_timeProvider.GetUtcNow());
     }
 
     [Fact]

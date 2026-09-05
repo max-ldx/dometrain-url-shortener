@@ -61,6 +61,10 @@ module apiService 'modules/compute/appservice.bicep' = {
         name: 'WepAppEndpoints'
         value: '${staticWebApp.outputs.url};http://localhost:5173'
       }
+      {
+        name: 'RedirectService__Endpoint'
+        value: '${redirectApiService.outputs.url}/r/'
+      }
     ]
   }
   dependsOn: [
