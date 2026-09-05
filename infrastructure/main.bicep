@@ -58,7 +58,7 @@ module apiService 'modules/compute/appservice.bicep' = {
         value: 'Urls.Read'
       }
       {
-        name: 'WepAppEndpoints'
+        name: 'WebAppEndpoints'
         value: '${staticWebApp.outputs.url},http://localhost:5173'
       }
       {
