@@ -76,7 +76,7 @@ builder.Services.AddCors(options =>
         if (builder.Configuration["WebAppEndpoints"] is null)
             return;
 
-        var origins = builder.Configuration["WebAppEndpoints"]!.Split(",");
+        var origins = builder.Configuration["WebAppEndpoints"]!.Split(";");
 
         policy
             .WithOrigins([.. origins])
