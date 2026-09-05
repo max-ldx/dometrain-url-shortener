@@ -66,6 +66,7 @@ builder.Services.AddAuthorization(options =>
         .RequireAuthenticatedUser()
         .Build();
 
+    options.FallbackPolicy = options.DefaultPolicy;
 });
 
 builder.Services.AddCors(options =>
@@ -86,12 +87,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowWebApp");
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowWebApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -113,7 +114,7 @@ app.MapPost("/api/urls",
         return !result.Succeeded
             ? Results.BadRequest(result.Error)
             : Results.Created($"/api/urls/{result.Value!.ShortUrl}", result.Value);
-    }).RequireAuthorization("AuthZPolicy");
+    });
 
 app.MapGet("/api/urls",
     async (HttpContext context, ListUrlsHandler handler, int? pageSize, string? continuationToken,
@@ -125,6 +126,6 @@ app.MapGet("/api/urls",
         var urls = await handler.HandleAsync(request, cancellationToken);
 
         return urls;
-    }).RequireAuthorization("AuthZPolicy");
+    });
 
 app.Run();
