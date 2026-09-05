@@ -66,7 +66,6 @@ builder.Services.AddAuthorization(options =>
         .RequireAuthenticatedUser()
         .Build();
 
-    options.FallbackPolicy = options.DefaultPolicy;
 });
 
 builder.Services.AddCors(options =>
@@ -87,12 +86,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseCors("AllowWebApp");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
-
-app.UseCors("AllowWebApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
