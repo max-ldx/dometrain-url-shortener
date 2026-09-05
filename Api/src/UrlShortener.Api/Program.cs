@@ -75,11 +75,21 @@ builder.Services.AddCors(options =>
     {
         var webAppEndpoints = builder.Configuration["WebAppEndpoints"];
 
-        if (webAppEndpoints is null) return;
+        Console.WriteLine($"WebAppEndpoints raw: '{webAppEndpoints}'");
 
-        var origins = webAppEndpoints.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                                     .Select(origin => origin.TrimEnd('/'))
-                                     .ToArray();
+        if (webAppEndpoints is null)
+        {
+            Console.WriteLine("WebAppEndpoints is NULL");
+            return;
+        }
+
+        var origins = webAppEndpoints
+            .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(origin => origin.TrimEnd('/'))
+            .ToArray();
+
+        Console.WriteLine(
+            $"Configured CORS origins: [{string.Join(", ", origins.Select(x => $"'{x}'"))}]");
 
         policy
             .WithOrigins(origins)
