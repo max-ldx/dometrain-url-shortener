@@ -73,7 +73,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWebApp", policy =>
     {
-        var webAppEndpoints = builder.Configuration["WebAppEndpoints"] ?? throw new InvalidOperationException("WebAppEndpoints configuration is missing.");
+        var webAppEndpoints = builder.Configuration["WebAppEndpoints"];
+
+        if (webAppEndpoints is null) return;
 
         var origins = webAppEndpoints.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                                      .Select(origin => origin.TrimEnd('/'))
