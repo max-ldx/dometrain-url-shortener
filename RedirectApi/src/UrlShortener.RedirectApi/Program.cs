@@ -18,7 +18,7 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Redirect API");
 
-app.MapGet("r/{shortUrl}",
+app.MapGet("/r/{shortUrl}",
     async (string shortUrl, IShortenedUrlReader reader, CancellationToken cancellationToken) =>
     {
         var response = await reader.GetLongUrlAsync(shortUrl, cancellationToken);
