@@ -22,7 +22,7 @@ if (!string.IsNullOrEmpty(keyVaultName))
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddHealthChecks()
     .AddCosmosHealthCheck(builder.Configuration)
-    .AddUrlGroup(new Uri(new Uri(builder.Configuration["TokenRangeService:Endpoint"]!), "healthz"),
+    .AddUrlGroup(new Uri(new Uri(builder.Configuration["TokenRangeService:Endpoint"] ?? "https://test.com"), "healthz"),
         name: "token-range-service");
 
 builder.Services.AddOpenApi();
