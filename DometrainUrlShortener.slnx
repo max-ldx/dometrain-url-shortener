@@ -1,7 +1,6 @@
 <Solution>
     <Folder Name="/Api/" />
     <Folder Name="/Api/src/">
-        <File Path="Api\src\TestList.txt" />
         <Project Path="Api/src/UrlShortener.Core/UrlShortener.Core.csproj" />
         <Project Path="Api/src/UrlShortener.Infrastructure/UrlShortener.Infrastructure.csproj" />
         <Project Path="Api\src\UrlShortener.Api\UrlShortener.Api.csproj" />
