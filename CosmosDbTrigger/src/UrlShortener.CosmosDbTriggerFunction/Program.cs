@@ -2,6 +2,7 @@ using Azure.Identity;
 using Azure.Monitor.OpenTelemetry.Exporter;
 using HealthChecks.CosmosDb;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Azure.Functions.Worker.OpenTelemetry;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,10 @@ if (!string.IsNullOrEmpty(keyVaultName))
 }
 
 builder.ConfigureFunctionsWebApplication();
+
+builder.Services
+    .AddApplicationInsightsTelemetryWorkerService()
+    .ConfigureFunctionsApplicationInsights();
 
 builder.Services.AddSingleton<CosmosClient>(_ => new CosmosClient(
     connectionString: builder.Configuration["CosmosDb:ConnectionString"]

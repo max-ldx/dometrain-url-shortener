@@ -1,4 +1,5 @@
 using Azure.Identity;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
@@ -89,6 +90,16 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+var applicationInsightsConnectionString =
+    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+
+var openTelemetry = builder.Services.AddOpenTelemetry();
+
+if (!string.IsNullOrWhiteSpace(applicationInsightsConnectionString))
+{
+    openTelemetry.UseAzureMonitor(options => { options.ConnectionString = applicationInsightsConnectionString; });
+}
 
 var app = builder.Build();
 
