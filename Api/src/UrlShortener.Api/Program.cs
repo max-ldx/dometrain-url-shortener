@@ -20,6 +20,11 @@ if (!string.IsNullOrEmpty(keyVaultName))
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddHealthChecks()
+    .AddCosmosHealthCheck(builder.Configuration)
+    .AddUrlGroup(new Uri(new Uri(builder.Configuration["TokenRangeService:Endpoint"]!), "healthz"),
+        name: "token-range-service");
+
 builder.Services.AddOpenApi();
 
 builder.Services
@@ -91,6 +96,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
+
+app.MapHealthChecks("/healthz");
 
 app.UseCors("AllowWebApp");
 

@@ -11,9 +11,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="AspNetCore.HealthChecks.CosmosDb" />
         <PackageReference Include="Microsoft.Azure.Cosmos"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
         <PackageReference Include="Newtonsoft.Json"/>
     </ItemGroup>
 
