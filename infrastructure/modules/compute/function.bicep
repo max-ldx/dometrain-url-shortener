@@ -28,7 +28,7 @@ resource function 'Microsoft.Web/sites@2025-03-01' = {
     publicNetworkAccess: 'Enabled'
     siteConfig: {
       linuxFxVersion: 'DOTNET-ISOLATED|10.0'
-      healthCheckPath: '/healthz'
+      healthCheckPath: '/api/healthz'
       alwaysOn: true
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
