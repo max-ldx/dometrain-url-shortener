@@ -13,6 +13,14 @@ module keyVault 'modules/secrets/keyvault.bicep' = {
   }
 }
 
+module logAnalyticsWorkspace './modules/telemetry/log-analytics.bicep' = {
+  name: 'logAnalyticsWorkspaceDeployment'
+  params: {
+    name: 'log-analytics-ws-${uniqueId}'
+    location: 'francecentral'
+  }
+}
+
 module apiService 'modules/compute/appservice.bicep' = {
   name: 'apiDeployment'
   params: {
@@ -20,6 +28,7 @@ module apiService 'modules/compute/appservice.bicep' = {
     appServicePlanName: 'plan-api-${uniqueId}'
     location: location
     keyVaultName: keyVaultName
+    logAnalyticsWorkspaceId: logAnalyticsWorkspace.outputs.id
     appSettings: [
       {
         name: 'DatabaseName'
@@ -79,6 +88,7 @@ module tokenRangeService 'modules/compute/appservice.bicep' = {
     appServicePlanName: 'plan-token-range-${uniqueId}'
     location: location
     keyVaultName: keyVaultName
+    logAnalyticsWorkspaceId: logAnalyticsWorkspace.outputs.id
   }
   dependsOn: [
     keyVault
@@ -92,6 +102,7 @@ module redirectApiService 'modules/compute/appservice.bicep' = {
     appServicePlanName: 'plan-redirect-${uniqueId}'
     location: location
     keyVaultName: keyVaultName
+    logAnalyticsWorkspaceId: logAnalyticsWorkspace.outputs.id
     appSettings: [
       {
         name: 'DatabaseName'
@@ -150,6 +161,7 @@ module cosmosTriggerFunction 'modules/compute/function.bicep' = {
     location: location
     keyVaultName: keyVaultName
     storageAccountConnectionString: storageAccount.outputs.storageConnectionString
+    logAnalyticsWorkspaceId: logAnalyticsWorkspace.outputs.id
     appSettings: [
       {
         name: 'CosmosDbConnection'
