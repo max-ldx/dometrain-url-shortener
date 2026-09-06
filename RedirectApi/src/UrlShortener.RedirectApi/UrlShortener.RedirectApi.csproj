@@ -12,9 +12,15 @@
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
         <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets"/>
         <PackageReference Include="Azure.Identity"/>
+        <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" />
         <PackageReference Include="Microsoft.Azure.Cosmos"/>
         <PackageReference Include="Microsoft.Azure.StackExchangeRedis"/>
         <PackageReference Include="Newtonsoft.Json"/>
+        <PackageReference Include="OpenTelemetry" />
+        <PackageReference Include="OpenTelemetry.Exporter.Console" />
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.StackExchangeRedis" />
     </ItemGroup>
 
 </Project>
