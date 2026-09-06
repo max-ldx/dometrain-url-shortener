@@ -11,6 +11,7 @@
     <PackageVersion Include="AspNetCore.HealthChecks.Uris" Version="9.0.0" />
     <PackageVersion Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.5.2" />
     <PackageVersion Include="Azure.Identity" Version="1.21.0" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.6.0" />
     <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.9.0" />
     <PackageVersion Include="FluentAssertions" Version="8.10.0" />
     <PackageVersion Include="Microsoft.ApplicationInsights.WorkerService" Version="3.1.2" />
@@ -34,7 +35,7 @@
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Npgsql" Version="10.0.3" />
-    <PackageVersion Include="OpenTelemetry" Version="1.18.0" />
+    <PackageVersion Include="OpenTelemetry" Version="1.18.0"/>
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.18.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.18.0" />

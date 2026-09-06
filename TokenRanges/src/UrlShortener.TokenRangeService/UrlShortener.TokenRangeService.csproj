@@ -9,8 +9,10 @@
     <ItemGroup>
         <PackageReference Include="AspNetCore.HealthChecks.NpgSql" />
         <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets"/>
+        <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Npgsql"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
     </ItemGroup>
 
 </Project>

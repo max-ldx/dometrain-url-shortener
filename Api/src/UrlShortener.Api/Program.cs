@@ -1,4 +1,5 @@
 using Azure.Identity;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
@@ -89,6 +90,10 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services
+    .AddOpenTelemetry()
+    .UseAzureMonitor();
 
 var app = builder.Build();
 
