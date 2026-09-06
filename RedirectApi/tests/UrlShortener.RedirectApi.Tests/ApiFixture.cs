@@ -28,6 +28,8 @@ public class ApiFixture : WebApplicationFactory<IRedirectApiAssemblyMarker>, IAs
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment("Testing");
+        
         builder.ConfigureTestServices(services =>
         {
             services.Remove<IShortenedUrlReader>();

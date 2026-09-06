@@ -9,6 +9,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using StackExchange.Redis;
+using UrlShortener.RedirectApi;
 using UrlShortener.RedirectApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,36 +37,42 @@ var applicationName = builder.Environment.ApplicationName ?? "RedirectApi";
 
 var telemetryConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
 
-builder.Services.AddOpenTelemetry()
-    .ConfigureResource(resource => resource.AddService(serviceName: applicationName))
-    .WithTracing(tracing =>
-    {
-        tracing.AddSource("Azure.Cosmos.Operation");
-        tracing.AddHttpClientInstrumentation();
-        tracing.AddRedisInstrumentation();
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    builder.Services.AddOpenTelemetry()
+        .ConfigureResource(resource => resource.AddService(serviceName: applicationName))
+        .WithTracing(tracing =>
+        {
+            tracing.AddSource("Azure.Cosmos.Operation");
+            tracing.AddHttpClientInstrumentation();
+            tracing.AddRedisInstrumentation();
 
-        tracing.AddConsoleExporter();
-        if (telemetryConnectionString is not null)
+            tracing.AddConsoleExporter();
+            if (!string.IsNullOrWhiteSpace(telemetryConnectionString))
+            {
+                tracing.AddAzureMonitorTraceExporter(options => options.ConnectionString = telemetryConnectionString);
+            }
+        })
+        .WithMetrics(metrics =>
         {
-            tracing.AddAzureMonitorTraceExporter(options => options.ConnectionString = telemetryConnectionString);
-        }
-    })
-    .WithMetrics(metrics =>
-    {
-        metrics.AddConsoleExporter();
-        if (telemetryConnectionString is not null)
+            metrics.AddConsoleExporter();
+            metrics.AddHttpClientInstrumentation();
+            metrics.AddMeter(ApplicationDiagnostics.Meter.Name);
+
+            if (!string.IsNullOrWhiteSpace(telemetryConnectionString))
+            {
+                metrics.AddAzureMonitorMetricExporter(options => options.ConnectionString = telemetryConnectionString);
+            }
+        })
+        .WithLogging(logging =>
         {
-            metrics.AddAzureMonitorMetricExporter(options => options.ConnectionString = telemetryConnectionString);
-        }
-    })
-    .WithLogging(logging =>
-    {
-        logging.AddConsoleExporter();
-        if (telemetryConnectionString is not null)
-        {
-            logging.AddAzureMonitorLogExporter(options => options.ConnectionString = telemetryConnectionString);
-        }
-    });
+            logging.AddConsoleExporter();
+            if (!string.IsNullOrWhiteSpace(telemetryConnectionString))
+            {
+                logging.AddAzureMonitorLogExporter(options => options.ConnectionString = telemetryConnectionString);
+            }
+        });
+}
 
 var app = builder.Build();
 
@@ -80,6 +87,11 @@ app.MapGet("/r/{shortUrl}",
     async (string shortUrl, IShortenedUrlReader reader, CancellationToken cancellationToken) =>
     {
         var response = await reader.GetLongUrlAsync(shortUrl, cancellationToken);
+
+        if (response.Found)
+        {
+            ApplicationDiagnostics.RedirectExecutedCounter.Add(1);
+        }
 
         return response switch
         {
